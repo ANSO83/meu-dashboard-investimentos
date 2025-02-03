@@ -93,3 +93,31 @@ def main():
 if __name__ == "__main__":
     main()
     conn.close()
+import streamlit as st
+import sqlite3
+
+def adicionar_investimento():
+    st.sidebar.header("Adicionar Novo Investimento")
+
+    data = st.sidebar.date_input("Data da Compra")
+    acao = "COMPRA"  # Sempre será compra por enquanto
+    ativo = st.sidebar.text_input("Nome do Ativo (ex: BTC, ETH)")
+    corretora = st.sidebar.selectbox("Corretora", ["BINANCE", "COINBASE", "KRAKEN", "OUTRA"])
+    quantidade = st.sidebar.number_input("Quantidade", min_value=0.0001, format="%.4f")
+    preco = st.sidebar.number_input("Preço Unitário", min_value=0.01, format="%.2f")
+
+    if st.sidebar.button("Adicionar"):
+        total = quantidade * preco
+        conn = sqlite3.connect("C:\\Users\\ddner\\Desktop\\APP\\investimentos.db")
+        cursor = conn.cursor()
+
+        cursor.execute("INSERT INTO investimentos (data, acao, ativo, corretora, quantidade, preco, total) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                       (data, acao, ativo, corretora, quantidade, preco, total))
+
+        conn.commit()
+        conn.close()
+
+        st.sidebar.success(f"✅ {quantidade} {ativo} adicionados!")
+
+# Chamar a função dentro do Streamlit
+adicionar_investimento()
