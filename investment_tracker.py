@@ -108,7 +108,33 @@ def adicionar_investimento():
 
     if st.sidebar.button("Adicionar"):
         total = quantidade * preco
-        conn = sqlite3.connect("C:\\Users\\ddner\\Desktop\\APP\\investimentos.db")
+        import psycopg2
+import pandas as pd
+
+# 🔗 URL de conexão ao PostgreSQL (substitua pela URL que o Neon.tech forneceu)
+DATABASE_URL = "postgresql://neondb_owner:npg_Xqu4RjHI2zhm@ep-damp-leaf-a86fyltt-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
+
+# Conectar ao PostgreSQL
+conn = psycopg2.connect(DATABASE_URL)
+cursor = conn.cursor()
+
+# Criar tabela se não existir
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS investimentos (
+    id SERIAL PRIMARY KEY,
+    data TEXT,
+    acao TEXT,
+    ativo TEXT,
+    corretora TEXT,
+    quantidade REAL,
+    preco REAL,
+    total REAL
+);
+''')
+
+conn.commit()
+print("✅ Banco de dados PostgreSQL conectado com sucesso!")
+
         cursor = conn.cursor()
 
         cursor.execute("INSERT INTO investimentos (data, acao, ativo, corretora, quantidade, preco, total) VALUES (?, ?, ?, ?, ?, ?, ?)",
