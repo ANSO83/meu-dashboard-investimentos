@@ -111,29 +111,30 @@ def adicionar_investimento():
 import psycopg2
 import pandas as pd
 
-# 🔗 URL de conexão ao PostgreSQL (substitua pela URL que o Neon.tech forneceu)
+# 🔗 URL de conexão ao PostgreSQL (Neon.tech)
 DATABASE_URL = "postgresql://neondb_owner:npg_Xqu4RjHI2zhm@ep-damp-leaf-a86fyltt-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
 
-# Conectar ao PostgreSQL
-conn = psycopg2.connect(DATABASE_URL)
-cursor = conn.cursor()
+try:
+    # Conectar ao PostgreSQL
+    conn = psycopg2.connect(DATABASE_URL)
+    cursor = conn.cursor()
 
-# Criar tabela se não existir
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS investimentos (
-    id SERIAL PRIMARY KEY,
-    data TEXT,
-    acao TEXT,
-    ativo TEXT,
-    corretora TEXT,
-    quantidade REAL,
-    preco REAL,
-    total REAL
-);
-''')
+    # Criar tabela se não existir
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS investimentos (
+        id SERIAL PRIMARY KEY,
+        data TEXT,
+        acao TEXT,
+        ativo TEXT,
+        corretora TEXT,
+        quantidade REAL,
+        preco REAL,
+        total REAL
+    );
+    ''')
 
-conn.commit()
-print("✅ Banco de dados PostgreSQL conectado com sucesso!")
+    conn.commit()
+    print("✅ Banco de dados PostgreSQL conectado com sucesso!")
 
 except Exception as e:
     print("❌ Erro ao conectar ao PostgreSQL:", e)
@@ -142,6 +143,7 @@ finally:
     if 'conn' in locals():
         conn.close()
         print("🔒 Conexão fechada com sucesso.")
+
 
 cursor = conn.cursor()
 
