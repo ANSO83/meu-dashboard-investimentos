@@ -135,12 +135,12 @@ CREATE TABLE IF NOT EXISTS investimentos (
 conn.commit()
 print("✅ Banco de dados PostgreSQL conectado com sucesso!")
 
-        cursor = conn.cursor()
+cursor = conn.cursor()
 
-        cursor.execute("INSERT INTO investimentos (data, acao, ativo, corretora, quantidade, preco, total) VALUES (?, ?, ?, ?, ?, ?, ?)",
+cursor.execute("INSERT INTO investimentos (data, acao, ativo, corretora, quantidade, preco, total) VALUES (?, ?, ?, ?, ?, ?, ?)",
                        (data, acao, ativo, corretora, quantidade, preco, total))
 
-        conn.commit()
+conn.commit()
         conn.close()
 
         st.sidebar.success(f"✅ {quantidade} {ativo} adicionados!")
