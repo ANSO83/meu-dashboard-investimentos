@@ -108,7 +108,7 @@ def adicionar_investimento():
 
     if st.sidebar.button("Adicionar"):
         total = quantidade * preco
-        import psycopg2
+import psycopg2
 import pandas as pd
 
 # 🔗 URL de conexão ao PostgreSQL (substitua pela URL que o Neon.tech forneceu)
@@ -135,15 +135,23 @@ CREATE TABLE IF NOT EXISTS investimentos (
 conn.commit()
 print("✅ Banco de dados PostgreSQL conectado com sucesso!")
 
+except Exception as e:
+    print("❌ Erro ao conectar ao PostgreSQL:", e)
+
+finally:
+    if 'conn' in locals():
+        conn.close()
+        print("🔒 Conexão fechada com sucesso.")
+
 cursor = conn.cursor()
 
 cursor.execute("INSERT INTO investimentos (data, acao, ativo, corretora, quantidade, preco, total) VALUES (?, ?, ?, ?, ?, ?, ?)",
                        (data, acao, ativo, corretora, quantidade, preco, total))
 
 conn.commit()
-        conn.close()
+conn.close()
 
-        st.sidebar.success(f"✅ {quantidade} {ativo} adicionados!")
+st.sidebar.success(f"✅ {quantidade} {ativo} adicionados!")
 
 # Chamar a função dentro do Streamlit
 adicionar_investimento()
